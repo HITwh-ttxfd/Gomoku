@@ -4,10 +4,13 @@
       <!--导航栏-->
       <el-header>
         <div class="title-header">
-          <img src="@/assets/img/bing.png" alt=""/>
-          <span class="span-header">中国象棋</span>
+          <img src="@/assets/img/gomoku.png" alt=""/>
+          <span class="span-header">Gomoku</span>
         </div>
-        <el-button type="info" @click="dialogVisible = true" plain>返回大厅</el-button>
+        <div class="shadow">
+          <el-button style="position: absolute; right: 3%; top: 17%"
+                     type="info" @click="dialogVisible = true" plain>返回大厅</el-button>
+        </div>
       </el-header>
       <!--玩家区域-->
       <div class="playerBox">
@@ -1167,6 +1170,13 @@
 
   .home-container {
     height: 100%;
+  }
+
+  .shadow {
+    width: 100%;
+    height: 9.57%;
+    box-shadow: 0px 7px 7px -7px #5E5E5E;
+    position: absolute;
   }
 
   /*251,189,85*/
