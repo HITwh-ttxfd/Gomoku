@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import test from '@/components/test'
 import homePage from '@/components/index/home'
 import login from '@/components/index/login'
 import index from '@/components/index/index'
@@ -36,11 +35,6 @@ const router = new Router({
         {path: '/addfri', component: addfri},
         {path: '/reqfri', component: reqfri}
       ]
-    },
-    {
-      path: '/hello',
-      name: 'test',
-      component: test
     },
     {
       path: '/login',

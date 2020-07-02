@@ -22,6 +22,7 @@ axios.interceptors.request.use(config => {
 
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$http = axios
+Vue.prototype.$axios = axios
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
