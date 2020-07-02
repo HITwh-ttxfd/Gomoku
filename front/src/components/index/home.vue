@@ -1,19 +1,23 @@
 <template>
   <el-container class="home-container">
     <!--头部区域-->
+    <div class="shadow">
+      <el-button style="position: absolute; right: 3%; top: 17%"
+                 type="info" @click="logout" plain>退出</el-button>
+    </div>
     <el-header>
       <div class="title-header">
-        <img src="@/assets/img/bing.png" alt=""/>
-        <span class="span-header">中国象棋</span>
+        <img src="@/assets/img/gomoku.png" alt=""/>
+        <span class="span-header">Gomoku</span>
         <!--菜单区域-->
         <el-menu
           :default-active="activeIndex"
           class="el-menu-demo"
           mode="horizontal"
           @select="handleSelect"
-          background-color="#A52A2A"
-          text-color="#fff"
-          active-text-color="#ffd04b"
+          background-color="#ffffff"
+          text-color="#666666"
+          active-text-color="#409EFF"
           :router="true">
           <!--index与路由设置中组件名对应即可实现页内路由跳转-->
           <el-menu-item index="waithall">对战大厅</el-menu-item>
@@ -21,7 +25,7 @@
             <template slot="title">个人中心</template>
             <el-menu-item index="userinfo">我的信息</el-menu-item>
             <el-menu-item index="history">历史对局</el-menu-item>
-<!--            <el-menu-item index="message">消息中心</el-menu-item>-->
+            <!--            <el-menu-item index="message">消息中心</el-menu-item>-->
           </el-submenu>
           <el-submenu index="friman">
             <template slot="title">好友管理</template>
@@ -29,10 +33,11 @@
             <el-menu-item index="addfri">添加好友</el-menu-item>
             <el-menu-item index="reqfri">好友请求</el-menu-item>
           </el-submenu>
-          <el-menu-item index="welcome"><a href="http://sports.sina.com.cn/chess/xiangqi/" target="_blank">新闻门户</a></el-menu-item>
+          <el-menu-item index="welcome"><a href="http://sports.sina.com.cn/chess/xiangqi/" target="_blank">新闻门户</a>
+          </el-menu-item>
         </el-menu>
       </div>
-      <el-button type="info" @click="logout" plain>退出</el-button>
+
     </el-header>
     <!--主体区域-->
     <el-main>
@@ -61,7 +66,7 @@
         window.sessionStorage.clear()
         this.$router.push('/login')
       },
-      handleSelect(){
+      handleSelect() {
 
       }
     }
@@ -74,9 +79,17 @@
     width: 100%;
   }
 
+  .shadow {
+    width: 100%;
+    height: 9.57%;
+    box-shadow: 0px 7px 7px -7px #5E5E5E;
+    position: absolute;
+  }
+
   .el-header {
-    background-color: brown;
-    color: #eeeeee;
+    /*181,210,150  222,166,73*/
+    background-color: #ffffff;
+    color: #666666;
     font-size: 30px;
     display: flex;
     justify-content: space-between;
@@ -89,6 +102,7 @@
   .title-header {
     display: flex;
     align-items: center;
+    margin-left: 20px;
   }
 
   .span-header {
