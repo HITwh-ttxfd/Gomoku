@@ -1,10 +1,10 @@
 <template>
   <div class="login_container">
-    <img src="@/assets/img/background.png" alt="" height=100% width=100%/>
+    <img src="@/assets/img/gomokuback.jpg" alt="" height=100% width=100%/>
     <div class="login_box">
       <!--头像区域-->
       <div class="avatar_box">
-        <img src="@/assets/img/logos.png" alt="">
+        <img src="@/assets/img/bigf.png" alt="">
       </div>
       <!--表单区域 model绑定表单，rules绑定校验规则-->
       <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" label-width="0px" class="login_form">
@@ -18,8 +18,8 @@
         </el-form-item>
         <!--按钮-->
         <el-form-item class="btn">
-          <el-button type="warning" plain @click="login">登录</el-button>
-          <el-button type="info" @click="dialogFormVisible = true" plain>注册</el-button>
+          <el-button type="info" plain @click="login">登录</el-button>
+          <el-button type="primary" @click="dialogFormVisible = true" plain>注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -208,7 +208,7 @@
   .login_box {
     width: 450px;
     height: 300px;
-    background-color: burlywood;
+    background-color: #d67f5c;
     border-radius: 3px;
     position: absolute;
     left: 50%;
@@ -226,7 +226,7 @@
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: burlywood;
+    background-color: #d67f5c;
 
     img {
       width: 100%;

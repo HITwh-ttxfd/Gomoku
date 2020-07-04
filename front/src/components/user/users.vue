@@ -188,7 +188,7 @@
     data() {
       return {
         username: "admin",
-        userImg: "http://39.98.48.34:2233/userImg/soldier.png",
+        userImg: "http://39.98.48.34:2233/userImg/indexAvatar.png",
         userdata: [],
         usercareer: [],
         drawer: false,
