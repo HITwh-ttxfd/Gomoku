@@ -26,21 +26,6 @@ Vue.prototype.$axios = axios
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
-// 初始化goeasy对象
-Vue.prototype.$goEasy = new GoEasy({
-  host: 'hangzhou.goeasy.io',//应用所在的区域地址，杭州：hangzhou.goeasy.io，新加坡：singapore.goeasy.io
-  appkey: "BC-2ba7043f485f4a738335fba6c3182be2",//替换为您的应用appkey
-  onConnected: function () {
-    console.log('连接成功！')
-  },
-  onDisconnected: function () {
-    console.log('连接断开！')
-  },
-  onConnectFailed: function (error) {
-    console.log('连接失败或错误！')
-  }
-});
-
 
 /* eslint-disable no-new */
 new Vue({
