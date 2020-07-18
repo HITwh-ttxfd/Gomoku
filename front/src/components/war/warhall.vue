@@ -27,8 +27,9 @@
     name: "warhall",
     data() {
       return {
-        square: [],
-        board: {}
+        board: {},
+        positions: [],
+        white: false
       }
     },
     methods: {
@@ -48,20 +49,63 @@
           board.stroke();
         }
         board.beginPath();
-        board.arc(300, 300, 5, 0, 2*Math.PI);
+        board.arc(300, 300, 5, 0, 2 * Math.PI, true);
         board.fill();
         board.beginPath();
-        board.arc(460, 460, 5, 0, 2*Math.PI);
+        board.arc(460, 460, 5, 0, 2 * Math.PI, true);
         board.fill();
         board.beginPath();
-        board.arc(460, 140, 5, 0, 2*Math.PI);
+        board.arc(460, 140, 5, 0, 2 * Math.PI, true);
         board.fill();
         board.beginPath();
-        board.arc(140, 140, 5, 0, 2*Math.PI);
+        board.arc(140, 140, 5, 0, 2 * Math.PI, true);
         board.fill();
         board.beginPath();
-        board.arc(140, 460, 5, 0, 2*Math.PI);
+        board.arc(140, 460, 5, 0, 2 * Math.PI, true);
         board.fill();
+        canvas.addEventListener('click', (event) => {
+          let position = this.getEventPosition(event);
+          if (position.y < 5 || position.x < 5 || position.x > 595 | position.y > 595) return;
+          let formattedX = 20 + Math.floor((position.x - 20) / 40) * 40;
+          let formattedY = 20 + Math.floor((position.y - 20) / 40) * 40;
+          if ((position.x - formattedX > 15 && position.x - formattedX < 25) || (position.y - formattedY > 15 && position.y - formattedY < 25)) return;
+          position.x = position.x - formattedX < 15 ? formattedX : formattedX + 40;
+          position.y = position.y - formattedY < 15 ? formattedY : formattedY + 40;
+          this.nextMove(position.x, position.y);
+        })
+      },
+      nextMove(x, y) {
+        let board = this.board;
+        board.beginPath();
+        board.arc(x, y, 15, 0, 2 * Math.PI, true);
+        board.closePath();
+        let gradient = board.createRadialGradient(x + 2, y - 2, 15, 15 + x + 2, y - 2, 0);
+        if (!this.white) {
+          gradient.addColorStop(0, '#0a0a0a');
+          gradient.addColorStop(1, '#636766');
+        } else {
+          gradient.addColorStop(0, '#d1d1d1');
+          gradient.addColorStop(1, '#f9f9f9');
+        }
+        board.fillStyle = gradient;
+        board.fill();
+      },
+      getEventPosition(ev) {
+        let x, y;
+        if (ev.layerX || ev.layerX === 0) {
+          x = ev.layerX;
+          y = ev.layerY;
+        } else if (ev.offsetX || ev.offsetX === 0) { // Opera
+          x = ev.offsetX;
+          y = ev.offsetY;
+        }
+        return {x: x, y: y};
+      }
+    },
+    created() {
+      this.positions = new Array(15);
+      for (let i = 0; i < 15; ++i) {
+        this.positions[i] = new Array(15).fill(0);
       }
     },
     mounted() {
@@ -127,6 +171,7 @@
 
         #canvas {
           margin: 75px 200px;
+          position: absolute;
           background: url("../../assets/img/timg.jpg") no-repeat center;
           background-size: cover;
           border-radius: 5px;
