@@ -8,6 +8,28 @@ const webSocketServer = new socketServer({
 let queuingList = [];
 let gameList = [];
 
+/*
+Param = {
+    type: enum{'nextMove','message'}
+    player: enum{'p1','p2'}
+
+    next: {
+        x: int(0-15)
+        y: int(0-15)
+    }
+
+    context: String
+}
+ */
+
+/*
+Response = {
+    data: Param
+
+    result: int(0-3)
+}
+ */
+
 webSocketServer.on('connection', function (ws) {
     if (queuingList.length === 0) {
         queuingList.push(ws);
@@ -41,13 +63,11 @@ function nextMove(ws, data) {
     game.status[data['next'].y][data['next'].x] = data['player'] === 'p1' ? 1 : 2;
     let result = statusJudge(game.status, data['next']);
     game[other].send({
-        type: 'nextMove',
-        next: data,
+        data: data,
         result: result
     });
     ws.send({
-        type: 'response',
-        next: data,
+        data: data,
         result: result
     });
     if (result !== 0) {
@@ -59,8 +79,12 @@ function sendMessage(ws, data) {
     let game =gameList.find(item => item[data['player']] === ws);
     if (!game) return;
     let other = data['player'] === 'p1' ? 'p2' : 'p1';
-    game[other].send(data);
-    ws.send(data);
+    game[other].send({
+        data: data
+    });
+    ws.send({
+        data: data
+    });
 }
 
 function statusJudge(status, currentPosition) {
