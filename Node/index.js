@@ -14,8 +14,8 @@ Param = {
     player: enum{'p1','p2'}
 
     next: {
-        x: int(0-15)
-        y: int(0-15)
+        x: int[0,15)
+        y: int[0,15)
     }
 
     context: String
@@ -26,7 +26,7 @@ Param = {
 Response = {
     data: Param
 
-    result: int(0-3)
+    result: int[0,3)
 }
  */
 

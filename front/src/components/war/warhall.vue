@@ -119,10 +119,11 @@
   $boardLine: rgb(50, 49, 49) 2px solid;
   .wrapper {
     height: 100%;
+    overflow: hidden;
 
     .header {
       position: relative;
-      background: rgba(247, 247, 247, 1.000);
+      background: linear-gradient(rgba(247, 247, 247, 1.000), rgba(198, 177, 151, 1.000));
       height: 70px;
       border-bottom: $border;
       box-shadow: 0 3px 3px -3px #5E5E5E;
@@ -158,13 +159,13 @@
     .body {
       position: relative;
       display: flex;
-      height: 91.4%;
+      height: 100%;
 
       .game {
         flex: 4;
         height: 100%;
         background: {
-          /*image: url("../../assets/img/1.jpg");*/
+          image: linear-gradient(0deg, #cbc1b4, rgba(198, 177, 151, 1.000));
           size: cover;
         };
         /*display: flex;*/
@@ -181,6 +182,10 @@
 
       .chatting {
         flex: 1.5;
+        background: {
+          image: linear-gradient(0deg, #cbc1b4, rgba(198, 177, 151, 1.000));
+        };
+        height: 100%;
         flex-direction: column;
         display: flex;
         border: {
