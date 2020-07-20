@@ -18,12 +18,24 @@
             <div class="statusContext">{{computedStatus}}</div>
           </el-card>
         </div>
-        <canvas id="canvas" height="600" width="600"></canvas>
+        <div class="board">
+          <canvas id="canvas" height="600" width="600"></canvas>
+        </div>
       </div>
-      <div class="chatting">
-        <div class="receive"></div>
-        <div class="send"></div>
+      <div :class="{'chatting':true,'active':active}">
+        <div class="receive" id="messageList">
+          <div :class="{'messageWrapper':true,'me':message.player===role,'rival': message.player!==role}" v-for="(message,index) in messages"
+               :key="index">
+            <div :class="{'message':true}">{{message.content}}</div>
+          </div>
+        </div>
+        <div class="send">
+          <div class="context" @keydown.enter="sendMessage" @keydown.shift.enter="enter"
+               placeholder="按Enter发送，Shift+Enter换行" contenteditable="true" @focus="active=true"
+               @blur="active=false"></div>
+        </div>
       </div>
+      <div class="empty"></div>
     </div>
   </div>
 </template>
@@ -38,7 +50,10 @@
         board: {},
         positions: [],
         status: 0,
-        role: ''
+        role: '',
+        text: '',
+        active: false,
+        messages: [],
       }
     },
     methods: {
@@ -51,8 +66,10 @@
             if (message.status) this.status = message.status;
             if (message.role) this.role = message.role;
             if (message.data) {
-              console.log('next');
-              this.nextMove(message.data.next.x, message.data.next.y, message.data.player);
+              if (message.data.type === 'message')
+                this.messages.push(message.data);
+              else
+                this.nextMove(message.data.next.x, message.data.next.y, message.data.player);
             }
           }
         } catch (e) {
@@ -138,7 +155,27 @@
       },
       heartbeat() {
         socket.send('');
-      }
+      },
+      sendMessage($event) {
+        setTimeout(() => {
+          if (this.entered)
+            this.entered = false;
+          else {
+            $event.target.innerText = $event.target.innerText.slice(0, -2);
+            socket.send(JSON.stringify({
+              type: 'message',
+              player: this.role,
+              content: $event.target.innerText
+            }))
+            $event.target.innerText = '';
+            $event.preventDefault();
+          }
+        }, 60)
+      },
+      enter() {
+        this.innerText += '\n';
+        this.entered = true;
+      },
     },
     computed: {
       computedStatus() {
@@ -187,18 +224,29 @@
 </style>
 
 <style lang="scss" scoped>
+  $shadow1: -8px -8px 16px -10px rgba(255, 255, 255, 1), 8px 8px 16px -10px rgba(0, 0, 0, .15);
+  $shadow2: -2px -2px 8px rgba(255, 255, 255, 1),
+  -2px -2px 12px rgba(255, 255, 255, 0.5),
+  inset 2px 2px 4px rgba(255, 255, 255, 0.1),
+  2px 2px 8px rgba(0, 0, 0, 0.15);
+  $shadow3: inset -2px -2px 8px rgba(255, 255, 255, 1),
+  inset -2px -2px 12px rgba(255, 255, 255, 0.5),
+  inset 2px 2px 4px rgba(255, 255, 255, 0.1),
+  inset 2px 2px 8px rgba(0, 0, 0, 0.15);
   $border: rgb(180, 168, 168) 1px solid;
   $boardLine: rgb(50, 49, 49) 2px solid;
+  $background: linear-gradient(135deg, rgba(230, 230, 230, 1) 0, rgba(246, 246, 246, 1) 100%);
   .wrapper {
     height: 100%;
     overflow: hidden;
+    background: #eee;
 
     .header {
       position: relative;
-      background: linear-gradient(#f0f0f0, rgba(198, 177, 151, 1.000));
+      /*background: linear-gradient(#f0f0f0, rgba(198, 177, 151, 1.000));*/
       height: 70px;
-      border-bottom: $border;
-      box-shadow: 0 3px 3px -3px #5E5E5E;
+      border-radius: 15px;
+      box-shadow: $shadow2;
 
       .left {
         position: absolute;
@@ -227,13 +275,16 @@
         top: 15px;
 
         .el-button {
-          background: rgba(208, 205, 205, 0.3);
+          background: #eee;
           border: none;
-          box-shadow: 2px 2px 2px 2px #c6b298;
+          box-shadow: $shadow2;
 
           &:hover {
-            background: #409EFF;
-            color: #ffffff;
+            background: #eee;
+            box-shadow: inset -2px -2px 8px rgba(255, 255, 255, 1),
+            inset -2px -2px 12px rgba(255, 255, 255, 0.5),
+            inset 2px 2px 4px rgba(255, 255, 255, 0.1),
+            inset 2px 2px 8px rgba(0, 0, 0, 0.15);;
           }
         }
       }
@@ -245,25 +296,30 @@
       height: 100%;
 
       .game {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
         flex: 4;
         height: 100%;
-        background: {
-          image: linear-gradient(0deg, #cbc1b4, rgba(198, 177, 151, 1.000));
-          size: cover;
-        };
+        /*background: {*/
+        /*  image: linear-gradient(0deg, #cbc1b4, rgba(198, 177, 151, 1.000));*/
+        /*  size: cover;*/
+        /*};*/
         /*display: flex;*/
 
         .statusBoard {
-          left: 27%;
-          position: absolute;
+          flex: 1;
 
           .el-card {
-            margin-top: 10px;
+            margin-top: 20px;
+            border-radius: 10px;
             width: 200px;
             height: 50px;
-            background: rgba(201, 184, 164, 1.000);
+            background: #eee;
             border: none;
             position: relative;
+            box-shadow: $shadow2;
 
             .statusColor {
               margin: {
@@ -315,36 +371,112 @@
           }
         }
 
-        #canvas {
-          margin: 80px 200px;
+        .board {
+          flex: 5;
+          display: flex;
+          margin-top: 5px;
+          width: 600px;
+          height: 600px;
+          padding: 7px;
+          border-radius: 20px;
+          background: #eee;
           position: absolute;
-          background: url("../../assets/img/timg.jpg") no-repeat center;
-          background-size: cover;
-          border-radius: 5px;
-          box-shadow: 10px 2px 10px 10px rgb(222, 179, 137), -10px -2px 10px 10px rgb(222, 179, 137);
+          box-shadow: $shadow2;
+
+          #canvas {
+            position: absolute;
+            background: url("../../assets/img/timg.jpg") no-repeat center;
+            /*background: #eee;*/
+            background-size: cover;
+            border-radius: 20px;
+          }
         }
       }
 
       .chatting {
-        flex: 1.5;
-        background: {
-          image: linear-gradient(0deg, #cbc1b4, rgba(198, 177, 151, 1.000));
-        };
-        height: 100%;
+        flex: 2;
+        margin-top: -40px;
+        align-self: center;
+        justify-self: center;
+        height: 80%;
         flex-direction: column;
         display: flex;
-        border: {
-          left: $border;
-        };
+        border-radius: 20px;
+        box-shadow: $shadow1;
 
         .receive {
           flex: 5;
+          position: relative;
+          padding: 20px;
+
+          .messageWrapper {
+            margin: 5px;
+            display: block;
+            clear: both;
+
+            .message {
+              /*position: absolute;*/
+              border-radius: 10px;
+              min-width: 1px;
+              max-width: 200px;
+              overflow: auto;
+              white-space: pre-line;
+              width: fit-content;
+              padding: 10px;
+              box-shadow: $shadow2;
+            }
+          }
+
+          .rival {
+            float: left;
+
+            .message {
+              background: #f3f3f3;
+            }
+
+          }
+
+          .me {
+            float: right;
+
+            .message {
+              background: #03c343;
+              color: #ffffff;
+            }
+          }
         }
 
         .send {
           flex: 1;
           border-top: $border;
+
+          .context {
+            margin: 10px;
+            height: 100%;
+            overflow: scroll;
+            outline: none;
+            color: #4f4f4f;
+            /*opacity: 0;*/
+
+            &:empty:before {
+              content: attr(placeholder);
+              font-size: 13px;
+              color: #999999;
+            }
+
+            &:focus:before {
+              content: none;
+            }
+          }
         }
+      }
+
+      .active {
+        box-shadow: $shadow3;
+      }
+
+      .empty {
+        flex: .5;
       }
     }
   }
