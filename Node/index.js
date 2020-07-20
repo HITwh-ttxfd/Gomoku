@@ -33,6 +33,9 @@ Response = {
 webSocketServer.on('connection', function (ws) {
     if (queuingList.length === 0) {
         queuingList.push(ws);
+        ws.send(JSON.stringify({
+            status: -1
+        }));
     } else {
         let status = new Array(15);
         for (let i = 0; i < 15; i++) {
@@ -44,15 +47,35 @@ webSocketServer.on('connection', function (ws) {
             status: status
         };
         gameList.push(game);
-        game.p1.send(1);
-        game.p2.send(2);
+        game.p1.send(JSON.stringify({
+            role: 'p1',
+            status: 1
+        }));
+        game.p2.send(JSON.stringify({
+            role: 'p2',
+            status: 2
+        }));
     }
     ws.on('message', function (data) {
-        if (data['type'] === 'nextMove')
+        if (!data)
+            return;
+        data = JSON.parse(data);
+        if (data['type'] === 'nextMove') {
             nextMove(ws, data);
-        else
+        } else
             sendMessage(ws, data);
     });
+    ws.on('close', function (data) {
+        let index = gameList.findIndex(item => item[data['player']] === ws)
+        let game = gameList[index];
+        if (!game) return;
+        let other = data['player'] === 'p1' ? 'p2' : 'p1';
+        game[other].send(JSON.stringify({
+            status: 0
+        }));
+        game[other].close();
+        gameList.splice(index, 1);
+    })
 });
 
 function nextMove(ws, data) {
@@ -60,31 +83,33 @@ function nextMove(ws, data) {
     let game = gameList[index];
     if (!game) return;
     let other = data['player'] === 'p1' ? 'p2' : 'p1';
+    if (game.status[data['next'].y][data['next'].x])
+        return;
     game.status[data['next'].y][data['next'].x] = data['player'] === 'p1' ? 1 : 2;
     let result = statusJudge(game.status, data['next']);
-    game[other].send({
+    game[other].send(JSON.stringify({
         data: data,
-        result: result
-    });
-    ws.send({
+        status: result < 4 ? result + 2 : 1
+    }));
+    ws.send(JSON.stringify({
         data: data,
-        result: result
-    });
-    if (result !== 0) {
-        gameList.splice(index,1);
+        status: result < 4 ? result + 2 : 2
+    }));
+    if (result < 4) {
+        gameList.splice(index, 1);
     }
 }
 
 function sendMessage(ws, data) {
-    let game =gameList.find(item => item[data['player']] === ws);
+    let game = gameList.find(item => item[data['player']] === ws);
     if (!game) return;
     let other = data['player'] === 'p1' ? 'p2' : 'p1';
-    game[other].send({
+    game[other].send(JSON.stringify({
         data: data
-    });
-    ws.send({
+    }));
+    ws.send(JSON.stringify({
         data: data
-    });
+    }));
 }
 
 function statusJudge(status, currentPosition) {
@@ -164,5 +189,12 @@ function statusJudge(status, currentPosition) {
         x--;
     }
     if (count2 > 4) return 2;
-    return 0;
+
+    for (let i = 0; i < 15; i++) {
+        for (let j = 0; j < 15; j++) {
+            if (!status[i][j])
+                return 4;
+        }
+    }
+    return 3;
 }
