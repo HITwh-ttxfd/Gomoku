@@ -14,7 +14,7 @@
         <div class="statusBoard">
           <el-card shadow="always" id="card1">
             <div
-              :class="{'statusColor':true,'queuing':status===-1,'disconnected':status===0,'myTurn':status===1,'rivalsTurn':status===2,'victory':status===3&&this.role === 'p1'||status===4&&this.role === 'p2','defeat':status===4&&this.role === 'p1'||status===3&&this.role === 'p2','draw':status===5}"></div>
+              :class="{'statusColor':true,'queuing':status===-1,'disconnected':status===0,'myTurn':status===1,'rivalsTurn':status===2,'victory':status===3&&role === 'p1'||status===4&&role === 'p2','defeat':status===4&&role === 'p1'||status===3&&role === 'p2','draw':status===5}"></div>
             <div class="statusContext">{{computedStatus}}</div>
           </el-card>
         </div>
@@ -65,7 +65,19 @@
           socket.onmessage = data => {
             console.log(data.data)
             let message = JSON.parse(data.data);
-            if (message.status) this.status = message.status;
+            if (message.status) {
+              this.status = message.status;
+              if (this.status === 3 || this.status === 4) {
+                this.$axios({
+                  method: 'GET',
+                  url: 'http://o3f3042260.zicp.vip/change',
+                  params: {
+                    id: window.sessionStorage.id,
+                    i: (this.status === 3 && this.role === 'p1') || (this.status === 4 && this.role === 'p2') ? 1 : -1
+                  }
+                })
+              }
+            }
             if (message.role) this.role = message.role;
             if (message.data) {
               if (message.data.type === 'message')
@@ -169,7 +181,7 @@
               this.$message.error('当前对局未开始')
               return;
             }
-            if (this.status > 2){
+            if (this.status > 2) {
               $event.preventDefault();
               this.$message.error('当前对局已结束')
               return;

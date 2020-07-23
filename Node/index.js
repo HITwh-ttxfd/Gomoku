@@ -78,6 +78,29 @@ webSocketServer.on('connection', function (ws) {
     })
 });
 
+setInterval(() => {
+    if (queuingList.length > 1) {
+        let status = new Array(15);
+        for (let i = 0; i < 15; i++) {
+            status[i] = new Array(15).fill(0);
+        }
+        let game = {
+            p1: queuingList.shift(),
+            p2: queuingList.shift(),
+            status: status
+        };
+        gameList.push(game);
+        game.p1.send(JSON.stringify({
+            role: 'p1',
+            status: 1
+        }));
+        game.p2.send(JSON.stringify({
+            role: 'p2',
+            status: 2
+        }));
+    }
+}, 10000);
+
 function nextMove(ws, data) {
     let index = gameList.findIndex(item => item[data['player']] === ws)
     let game = gameList[index];
