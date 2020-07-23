@@ -29,12 +29,12 @@
             <!--            <el-menu-item index="message">消息中心</el-menu-item>-->
           </el-submenu>
           <!--好友功能 待定-->
-          <el-submenu index="friman">
+          <!--<el-submenu index="friman">
             <template slot="title">好友管理</template>
             <el-menu-item index="myfri">我的好友</el-menu-item>
             <el-menu-item index="addfri">添加好友</el-menu-item>
             <el-menu-item index="reqfri">好友请求</el-menu-item>
-          </el-submenu>
+          </el-submenu>-->
           <el-menu-item index="welcome"><a href="http://www.wuzi8.com/" target="_blank">新闻门户</a>
           </el-menu-item>
         </el-menu>

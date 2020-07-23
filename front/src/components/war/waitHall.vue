@@ -18,7 +18,8 @@
       </el-col>-->
     </el-row>
     <el-card>
-      <div style="width: 100%; height: 450px">
+      <!-- background: url('http://39.98.48.34:2233/userImg/back5.jpg');-->
+      <div style="width: 100%; height: 450px;">
         <div style="display: flex; justify-content: center">
           <el-image src="http://39.98.48.34:2233/userImg/back4.jpg" style="width: 650px;"></el-image>
         </div>
@@ -28,7 +29,6 @@
         <div style="display: flex; justify-content: center; padding-top: 40px">
           <span>系统将会为您随机匹配玩家！</span>
         </div>
-<!--        <el-image src="http://39.98.48.34:2233/userImg/back5.jpg" style="position: absolute; top: 1%;"></el-image>-->
       </div>
     </el-card>
 

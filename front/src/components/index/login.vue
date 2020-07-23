@@ -14,7 +14,8 @@
         </el-form-item>
         <!--密码-->
         <el-form-item prop="password">
-          <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="loginForm.password" type="password"></el-input>
+          <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="loginForm.password"
+                    type="password"></el-input>
         </el-form-item>
         <!--按钮-->
         <el-form-item class="btn">
@@ -42,8 +43,8 @@
             prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
         <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
-          <el-radio v-model="form.sex" label="男">男</el-radio>
-          <el-radio v-model="form.sex" label="女">女</el-radio>
+          <el-radio v-model="form.sex" label="boy">男</el-radio>
+          <el-radio v-model="form.sex" label="girl">女</el-radio>
         </el-form-item>
         <el-form-item label="年龄" :label-width="formLabelWidth">
           <el-input-number
@@ -157,8 +158,22 @@
         this.$refs.loginFormRef.validate(valid => {
           // console.log(valid)
           if (!valid) return
-          this.$http.get('login_check?username=' + this.loginForm.username + '&password=' + this.loginForm.password).then(res => {
-            // console.log(res.data)
+          this.$axios('http://o3f3042260.zicp.vip/login?id=' + this.loginForm.username + '&password=' + this.loginForm.password).then(res => {
+            // console.log(res)
+            if (res.data === 1) {
+              this.$message.success("登录成功！")
+              window.sessionStorage.setItem("id", this.loginForm.username)
+              window.sessionStorage.setItem("token", res.data.token)
+              this.$router.push('/home')
+            } else {
+              this.$message.error("用户名/密码错误！")
+            }
+          })
+          /*this.$axios('http://106.14.175.24:9098/hell/123').then(res=>{
+            console.log(res)
+          })*/
+          /*this.$http.get('login_check?username=' + this.loginForm.username + '&password=' + this.loginForm.password).then(res => {
+            console.log(res)
             var sta = res.data.flag
             if (sta === 'none') {
               this.$message.error("该用户不存在！")
@@ -173,7 +188,7 @@
             } else {
               this.$message.info("异常错误")
             }
-          })
+          })*/
         })
       },
       logon() {
@@ -184,15 +199,26 @@
             this.dialogFormVisible = false
             let data = {
               'name': this.form.name, 'password': this.form.password, 'sex': this.form.sex, 'age': this.form.age,
-              'birth': this.form.birth, 'email': this.form.email
+              'birth': this.form.birth !== '' ? this.form.birth : 'none', 'email': this.form.email
             }
-            this.$http.post('logon', data).then(res => {
+            console.log(data)
+            this.$axios.get('http://o3f3042260.zicp.vip/makeAccount?id=' + data.name + '&password=' + data.password
+              + '&sex=' + data.sex + '&age=' + data.age + '&birth=' + data.birth + '&email=' + data.email).then(res => {
               console.log(res)
+              if (res.data === 0) {
+                this.$message.success("注册成功！")
+              }
             })
-            this.$message.success("注册成功！")
           } else {
             this.$message.error("请检查输入信息！")
           }
+          /*this.$http.post('logon', data).then(res => {
+            console.log(res)
+          })
+          this.$message.success("注册成功！")
+        } else {
+          this.$message.error("请检查输入信息！")
+        }*/
         })
       }
     }

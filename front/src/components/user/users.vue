@@ -29,7 +29,7 @@
             <h1>{{username}}</h1>
             <el-row :gutter="20">
               <el-col :span="18">
-                <el-progress :percentage="80" color="#A52A2A" text-inside></el-progress>
+                <el-progress :percentage="this.percentage" color="#A52A2A" show-text="false"></el-progress>
               </el-col>
               <el-col :span="3"><p style="font-size: 14px; position: absolute; top:-16px;">经验值</p></el-col>
               <el-col :span="3">
@@ -75,16 +75,17 @@
           </template>
           <el-row>
             <el-col :span="3">
-              <h3>总场次: {{usercareer.allGame}}</h3>
+              <!--usercareer.allGame  usercareer.winGame  usercareer.lossGame  usercareer.winPer*100-->
+              <h3>总场次: {{parseInt(userdata.win)+parseInt(userdata.lose)}}</h3>
             </el-col>
             <el-col :span="3">
-              <h3>胜场: {{usercareer.winGame}}</h3>
+              <h3>胜场: {{userdata.win}}</h3>
             </el-col>
             <el-col :span="3">
-              <h3>负场: {{usercareer.lossGame}}</h3>
+              <h3>负场: {{userdata.lose}}</h3>
             </el-col>
             <el-col :span="3">
-              <h3>胜率: {{usercareer.winPer*100}}%</h3>
+              <h3>胜率: {{userdata.winrate*100}}%</h3>
             </el-col>
           </el-row>
           <el-row>
@@ -97,16 +98,13 @@
           <template slot="title">
             <p style="font-size: 15px">游戏设置</p>
           </template>
-          <div>简化流程：设计简洁直观的操作流程；</div>
-          <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-          <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
+          <div>亟待开发...</div>
         </el-collapse-item>
         <el-collapse-item name="4">
           <template slot="title">
             <p style="font-size: 15px">....</p>
           </template>
-          <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-          <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+          <div>更多功能亟待开发...</div>
         </el-collapse-item>
       </el-collapse>
     </el-card>
@@ -168,7 +166,8 @@
               prefix-icon="el-icon-edit"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm" plain>提交<i class="el-icon-upload el-icon--right"></i></el-button>
+            <el-button type="primary" @click="submitForm" plain>提交<i class="el-icon-upload el-icon--right"></i>
+            </el-button>
             <el-button @click="drawer=false">取消</el-button>
           </el-form-item>
         </el-form>
@@ -206,26 +205,72 @@
           birth: '',
           email: '',
           imgBase64: 'null',
-        }
+        },
+        percentage: 0
         /*avatarImg: require('@/assets/img/bing.png'),
         toMPicimg: require('@/assets/img/bing .png')*/
       }
     },
     methods: {
-      format(percentage) {
-        return percentage === 100 ? '满' : `${percentage}%`;
+      increase() {
+        var num = parseInt(this.userdata.win)
+        if(this.userdata.level==='0'){
+        //  小白 0-4
+          num = num / 4 * 100
+          this.percentage = num
+        }
+        if(this.userdata.level==='1'){
+        //  入门 4-30
+          num = num / 30 * 100
+          this.percentage = num
+        }
+        if(this.userdata.level==='2'){
+        //  高手 30-50
+          num = num / 50 * 100
+          this.percentage = num
+        }
+        if(this.userdata.level==='2'){
+        //  大师 50+
+          this.percentage = 100
+        }
       },
       getUserdata() {
         var id = window.sessionStorage.getItem('id')
         let self = this
-        this.$http.get('getuserdata?id=' + id).then(res => {
+        this.$axios.get('http://o3f3042260.zicp.vip/getUser?id=' + id).then(res => {
+          // console.log(res.data)
+          self.userdata = res.data
+          if(self.userdata.sex === 'boy'){
+            self.userdata.sex = '男'
+          }
+          if(self.userdata.sex === 'girl'){
+            self.userdata.sex = '女'
+          }
+          this.increase()
+          //调整等级显示
+          if(self.userdata.level === '0'){
+            self.userdata.level = '小白'
+          }
+          if(self.userdata.level === '1'){
+            self.userdata.level = '入门'
+          }
+          if(self.userdata.level === '2'){
+            self.userdata.level = '高手'
+          }
+          if(self.userdata.level === '3'){
+            self.userdata.level = '大师'
+          }
+          //调整胜率位数
+          self.userdata.winrate = parseFloat(self.userdata.winrate).toFixed(2)
+        })
+       /* this.$http.get('getuserdata?id=' + id).then(res => {
           self.userdata = res.data.userdata
           //console.log(this.userdata)
-        })
-        this.$http.get('getAvatar?id='+id).then(res =>{
+        })*/
+        this.$http.get('getAvatar?id=' + id).then(res => {
           this.imageUrl = res.data.path
           // console.log(res)
-          if(res.data.error_num === 0){
+          if (res.data.error_num === 0) {
             this.userImg = this.imageUrl
           }
           // console.log(this.imageUrl)
@@ -251,7 +296,7 @@
       handleChange(file, fileList) {
         this.imageUrl = URL.createObjectURL(file.raw);
         this.fileIndex = file
-        this.getBase64(file.raw).then(res=>{
+        this.getBase64(file.raw).then(res => {
           this.form.imgBase64 = res
           console.log(this.form)
         })
@@ -297,10 +342,10 @@
       submitForm() {
         // 提交表单信息
         let data = {
-          'name': this.form.name, 'password': this.form.password, 'sex': this.form.sex, 'age': this.form.age,
-          'birth': this.form.birth, 'email': this.form.email, 'base':this.form.imgBase64
+          'name': this.form.name, 'password': this.form.password, 'sex': this.form.sex==='男'?'boy':'girl', 'age': this.form.age,
+          'birth': this.form.birth, 'email': this.form.email, 'base': this.form.imgBase64
         }
-        this.$http.post('changeUserData', data).then(res=>{
+        this.$http.post('changeUserData', data).then(res => {
           this.drawer = false
           this.getUserdata()
           this.$message.success('修改个人信息成功！')
