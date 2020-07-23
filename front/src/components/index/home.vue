@@ -1,14 +1,15 @@
 <template>
   <el-container class="home-container">
     <!--头部区域-->
-    <div class="shadow">
-      <el-button style="position: absolute; right: 3%; top: 17%"
-                 type="info" @click="logout" plain>退出</el-button>
-    </div>
-    <el-header>
+
+    <el-header class="elheader">
       <div class="title-header">
         <img src="@/assets/img/gomoku.png" alt=""/>
         <span class="span-header">Gomoku</span>
+        <div class="shadow"></div>
+        <el-button style="position: absolute; right: 25px"
+                   type="info" @click="logout" plain>退出
+        </el-button>
         <!--菜单区域-->
         <el-menu
           :default-active="activeIndex"
@@ -28,17 +29,16 @@
             <!--            <el-menu-item index="message">消息中心</el-menu-item>-->
           </el-submenu>
           <!--好友功能 待定-->
-          <!--<el-submenu index="friman">
+          <el-submenu index="friman">
             <template slot="title">好友管理</template>
             <el-menu-item index="myfri">我的好友</el-menu-item>
             <el-menu-item index="addfri">添加好友</el-menu-item>
             <el-menu-item index="reqfri">好友请求</el-menu-item>
-          </el-submenu>-->
+          </el-submenu>
           <el-menu-item index="welcome"><a href="http://www.wuzi8.com/" target="_blank">新闻门户</a>
           </el-menu-item>
         </el-menu>
       </div>
-
     </el-header>
     <!--主体区域-->
     <el-main>
@@ -81,14 +81,10 @@
   }
 
   .shadow {
-    width: 100%;
-    height: 9.57%;
-    box-shadow: 0px 7px 7px -7px #5E5E5E;
-    position: absolute;
-  }
-
-  .el-header {
-    /*181,210,150  222,166,73*/
+    /*width: 100%;
+    height: 9.57%;*/
+    box-shadow: 0px 10px 10px #5E5E5E;
+    /*position: relative;*/
     background-color: #ffffff;
     color: #666666;
     font-size: 30px;
@@ -100,10 +96,27 @@
     align-items: center;
   }
 
+  .elheader {
+    /*box-shadow: 0px 10px 10px #5E5E5E;*/
+    /*181,210,150  222,166,73*/
+    /*background-color: #ffffff;*/
+    /*color: #666666;*/
+    /*font-size: 30px;*/
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*!*左边贴边*!*/
+    /*padding-left: 0;*/
+    /*!*按钮居中*!*/
+    /*align-items: center;*/
+  }
+
   .title-header {
     display: flex;
     align-items: center;
-    margin-left: 20px;
+    margin-left: 0px;
+    font-size: 25px;
+    color: #666666;
+    /*box-shadow: 0px 10px 10px #5E5E5E;*/
   }
 
   .span-header {

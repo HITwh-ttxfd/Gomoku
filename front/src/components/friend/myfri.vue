@@ -13,8 +13,7 @@
           <!--头像&id&等级-->
           <el-row>
             <el-col :span="6">
-              <img :src="friendList[index].fields.avatarPath? friendList[index].fields.avatarPath :
-              'http://39.98.48.34:2233/userImg/soldier.png'"
+              <img :src="friendList[index].fields.avatarPath"
                    class="fri-image">
             </el-col>
             <el-col :span="3">
