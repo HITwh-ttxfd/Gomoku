@@ -24,7 +24,8 @@
       </div>
       <div :class="{'chatting':true,'active':active}">
         <div class="receive" id="messageList">
-          <div :class="{'messageWrapper':true,'me':message.player===role,'rival': message.player!==role}" v-for="(message,index) in messages"
+          <div :class="{'messageWrapper':true,'me':message.player===role,'rival': message.player!==role}"
+               v-for="(message,index) in messages"
                :key="index">
             <div :class="{'message':true}">{{message.content}}</div>
           </div>
@@ -60,6 +61,7 @@
       connect() {
         try {
           socket = new WebSocket('ws://localhost:8000');
+          // socket = new WebSocket('ws://60.205.252.251:8000');
           socket.onmessage = data => {
             console.log(data.data)
             let message = JSON.parse(data.data);
@@ -162,6 +164,16 @@
             this.entered = false;
           else {
             $event.target.innerText = $event.target.innerText.slice(0, -2);
+            if (this.status < 1) {
+              $event.preventDefault();
+              this.$message.error('当前对局未开始')
+              return;
+            }
+            if (this.status > 2){
+              $event.preventDefault();
+              this.$message.error('当前对局已结束')
+              return;
+            }
             socket.send(JSON.stringify({
               type: 'message',
               player: this.role,
@@ -237,6 +249,8 @@
   $boardLine: rgb(50, 49, 49) 2px solid;
   $background: linear-gradient(135deg, rgba(230, 230, 230, 1) 0, rgba(246, 246, 246, 1) 100%);
   .wrapper {
+    min-width: 1440px;
+    min-height: 768px;
     height: 100%;
     overflow: hidden;
     background: #eee;
@@ -354,11 +368,11 @@
             }
 
             .defeat {
-              background: #F56C6C;
+              background: #fc1414;
             }
 
             .draw {
-              background: #3defd3;
+              background: #f67070;
             }
 
             .statusContext {

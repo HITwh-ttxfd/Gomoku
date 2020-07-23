@@ -134,13 +134,13 @@ function statusJudge(status, currentPosition) {
     count2 = 0;
     x = currentPosition.x;
     y = Math.max(currentPosition.y - 4, 0);
-    while (status[y][x] === 0 && y <= Math.min(currentPosition.y + 4, 14)) y++;
-    while (status[y][x] === 1 && y <= Math.min(currentPosition.y + 4, 14)) {
+    while (y <= Math.min(currentPosition.y + 4, 14) && status[y][x] === 0) y++;
+    while (y <= Math.min(currentPosition.y + 4, 14) && status[y][x] === 1) {
         count1++;
         y++;
     }
     if (count1 > 4) return 1;
-    while (status[y][x] === 2 && y <= Math.min(currentPosition.y + 4, 14)) {
+    while (y <= Math.min(currentPosition.y + 4, 14) && status[y][x] === 2) {
         count2++;
         y++;
     }
@@ -151,17 +151,17 @@ function statusJudge(status, currentPosition) {
     count2 = 0;
     x = Math.max(currentPosition.x - 4, 0);
     y = Math.max(currentPosition.y - 4, 0);
-    while (status[y][x] === 0 && x <= Math.min(currentPosition.x + 4, 14) && y <= Math.min(currentPosition.y + 4, 14)) {
+    while (x <= Math.min(currentPosition.x + 4, 14) && y <= Math.min(currentPosition.y + 4, 14) && status[y][x] === 0) {
         x++;
         y++;
     }
-    while (status[y][x] === 1 && x <= Math.min(currentPosition.x + 4, 14) && y <= Math.min(currentPosition.y + 4, 14)) {
+    while (x <= Math.min(currentPosition.x + 4, 14) && y <= Math.min(currentPosition.y + 4, 14) && status[y][x] === 1) {
         count1++;
         y++;
         x++;
     }
     if (count1 > 4) return 1;
-    while (status[y][x] === 2 && x <= Math.min(currentPosition.x + 4, 14) && y <= Math.min(currentPosition.y + 4, 14)) {
+    while (x <= Math.min(currentPosition.x + 4, 14) && y <= Math.min(currentPosition.y + 4, 14) && status[y][x] === 2) {
         count2++;
         y++;
         x++;
@@ -173,17 +173,17 @@ function statusJudge(status, currentPosition) {
     count2 = 0;
     x = Math.min(currentPosition.x + 4, 14);
     y = Math.max(currentPosition.y - 4, 0);
-    while (status[y][x] === 0 && x >= Math.max(currentPosition.x - 4, 0) && y <= Math.min(currentPosition.y + 4, 14)) {
+    while (x >= Math.max(currentPosition.x - 4, 0) && y <= Math.min(currentPosition.y + 4, 14) && status[y][x] === 0) {
         x--;
         y++;
     }
-    while (status[y][x] === 1 && x >= Math.max(currentPosition.x - 4, 0) && y <= Math.min(currentPosition.y + 4, 14)) {
+    while (x >= Math.max(currentPosition.x - 4, 0) && y <= Math.min(currentPosition.y + 4, 14) && status[y][x] === 1) {
         count1++;
         y++;
         x--;
     }
     if (count1 > 4) return 1;
-    while (status[y][x] === 2 && x >= Math.max(currentPosition.x - 4, 0) && y <= Math.min(currentPosition.y + 4, 14)) {
+    while (x >= Math.max(currentPosition.x - 4, 0) && y <= Math.min(currentPosition.y + 4, 14) && status[y][x] === 2) {
         count2++;
         y++;
         x--;
