@@ -55,18 +55,18 @@ const router = new Router({
   ]
 })
 
-// // 挂载路由导航守卫
-// router.beforeEach((to, from, next) => {
-//   // to 将要访问的
-//   // from 代表从哪个路径跳转而来
-//   // next是放行函数
-//   // next('/login') 强制跳转
-//
-//   //登录页直接放行
-//   if (to.path === '/login') return next()
-//   const token = window.sessionStorage.getItem('token')
-//   if (!token) return next('/login')
-//   next()
-// })
+// 挂载路由导航守卫
+router.beforeEach((to, from, next) => {
+  // to 将要访问的
+  // from 代表从哪个路径跳转而来
+  // next是放行函数
+  // next('/login') 强制跳转
+
+  //登录页直接放行
+  if (to.path === '/login') return next()
+  const token = window.sessionStorage.getItem('token')
+  if (!token) return next('/login')
+  next()
+})
 
 export default router
