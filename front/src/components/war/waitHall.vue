@@ -23,7 +23,7 @@
           <el-image src="http://39.98.48.34:2233/userImg/back4.jpg" style="width: 650px;"></el-image>
         </div>
         <div style="display: flex; justify-content: center; padding-top: 40px">
-          <el-button size="large" @click="this.$router.push('/warhall')">开始游戏</el-button>
+          <el-button size="large" @click="enter()">开始游戏</el-button>
         </div>
         <div style="display: flex; justify-content: center; padding-top: 40px">
           <span>系统将会为您随机匹配玩家！</span>
@@ -140,6 +140,9 @@
             message: '2,' + '黑方就绪' + ',' + aimID //替换为您想要发送的消息内容
           });
         }
+      },
+      enter(){
+        this.$router.push('/warhall')
       },
       enterButEna(index) {
         // 按钮可用性渲染
