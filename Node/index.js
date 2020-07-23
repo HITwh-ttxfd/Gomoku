@@ -117,13 +117,13 @@ function statusJudge(status, currentPosition) {
     let count1 = 0, count2 = 0;
     let x = Math.max(currentPosition.x - 4, 0);
     let y = currentPosition.y;
-    while (status[y][x] === 0 && x <= Math.min(currentPosition.x + 4, 14)) x++;
-    while (status[y][x] === 1 && x <= Math.min(currentPosition.x + 4, 14)) {
+    while (x <= Math.min(currentPosition.x + 4, 14) && status[y][x] === 0) x++;
+    while (x <= Math.min(currentPosition.x + 4, 14) && status[y][x] === 1) {
         count1++;
         x++;
     }
     if (count1 > 4) return 1;
-    while (status[y][x] === 2 && x <= Math.min(currentPosition.x + 4, 14)) {
+    while (x <= Math.min(currentPosition.x + 4, 14) && status[y][x] === 2) {
         count2++;
         x++
     }
