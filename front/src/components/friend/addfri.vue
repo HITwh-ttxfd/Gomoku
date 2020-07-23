@@ -11,7 +11,7 @@
       <div class="image__placeholder">
         <div class="block" style="display: flex; justify-content: center">
           <!--          <span class="demonstration">自定义</span>-->
-          <el-image :src="imgSrc" style="width: 500px; padding-bottom: 5%">
+          <el-image :src="imgSrc" style="width: 325px; padding-bottom: 5%">
             <div slot="placeholder" class="image-slot">
               加载中<span class="dot">...</span>
             </div>
@@ -80,7 +80,7 @@
     data() {
       // https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg
       return {
-        imgSrc: 'http://39.98.48.34:2233/userImg/back2.jpg',
+        imgSrc: 'http://39.98.48.34:2233/userImg/back3.jpg',
         input: '',
         dialogVisible: false,
         infoForm: {

@@ -8,45 +8,58 @@
           <el-breadcrumb-item>对战大厅</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
-      <el-col :span="6">
+      <!--<el-col :span="6">
         <div class="buttonBox">
           <el-button type="primary" style="padding: 7px" @click="makeWar" plain :disabled="buttonEnable">发起战局
           </el-button>
           <el-button type="danger" style="padding: 7px" @click="cancelWar" plain :disabled="!(buttonEnable)">取消我的对局
           </el-button>
         </div>
-      </el-col>
+      </el-col>-->
     </el-row>
+    <el-card>
+      <div style="width: 100%; height: 450px">
+        <div style="display: flex; justify-content: center">
+          <el-image src="http://39.98.48.34:2233/userImg/back4.jpg" style="width: 650px;"></el-image>
+        </div>
+        <div style="display: flex; justify-content: center; padding-top: 40px">
+          <el-button size="large" @click="this.$router.push('/warhall')">开始游戏</el-button>
+        </div>
+        <div style="display: flex; justify-content: center; padding-top: 40px">
+          <span>系统将会为您随机匹配玩家！</span>
+        </div>
+<!--        <el-image src="http://39.98.48.34:2233/userImg/back5.jpg" style="position: absolute; top: 1%;"></el-image>-->
+      </div>
+    </el-card>
 
-    <!--好友卡片-->
-    <el-row>
-      <el-col :span="8" v-for="(o, index) in warInfo.length" :key="o">
-        <el-card :body-style="{ padding: '4px' }" shadow="hover">
-          <!--头像&id&等级-->
-          <el-row>
-            <el-col :span="6">
-              <img :src="warInfo[index].fields.path"
-                   class="image">
-            </el-col>
-            <el-col :span="3">
-              <span style="position: absolute; top: 40px; font-size: 22px; font-weight: bold">
-                发起人：{{warInfo[index].pk}}</span>
-            </el-col>
-            <el-col :span="3">
-              <span style="position: absolute; top: 60px; left: 220px; font-size: 15px; font-weight: bold"></span>
-            </el-col>
-          </el-row>
-          <div style="padding: 10px;">
-            <div class="bottom clearfix">
-              <time class="time">等级:{{warInfo[index].fields.level}}</time>
-              <el-button type="success" class="button" @click="enterWar(index)" :disabled="enterButEna(index)" plain>
-                {{enterButTxt(index)}}
-              </el-button>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
+    <!--    <el-row>
+          <el-col :span="8" v-for="(o, index) in warInfo.length" :key="o">
+            <el-card :body-style="{ padding: '4px' }" shadow="hover">
+              &lt;!&ndash;头像&id&等级&ndash;&gt;
+              <el-row>
+                <el-col :span="6">
+                  <img :src="warInfo[index].fields.path"
+                       class="image">
+                </el-col>
+                <el-col :span="3">
+                  <span style="position: absolute; top: 40px; font-size: 22px; font-weight: bold">
+                    发起人：{{warInfo[index].pk}}</span>
+                </el-col>
+                <el-col :span="3">
+                  <span style="position: absolute; top: 60px; left: 220px; font-size: 15px; font-weight: bold"></span>
+                </el-col>
+              </el-row>
+              <div style="padding: 10px;">
+                <div class="bottom clearfix">
+                  <time class="time">等级:{{warInfo[index].fields.level}}</time>
+                  <el-button type="success" class="button" @click="enterWar(index)" :disabled="enterButEna(index)" plain>
+                    {{enterButTxt(index)}}
+                  </el-button>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>-->
   </div>
 
 </template>
@@ -56,8 +69,8 @@
     name: "waitHall",
     mounted() {
       this.user = window.sessionStorage.getItem('id')
-      this.getWarList()
-      this.receiveInfo()
+      // this.getWarList()
+      // this.receiveInfo()
     },
     data() {
       return {
