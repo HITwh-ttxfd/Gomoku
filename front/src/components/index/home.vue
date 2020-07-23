@@ -22,12 +22,13 @@
           :router="true">
           <!--index与路由设置中组件名对应即可实现页内路由跳转-->
           <el-menu-item index="waithall">对战大厅</el-menu-item>
-          <el-submenu index="user">
+          <el-menu-item index="userinfo">个人中心</el-menu-item>
+          <!--<el-submenu index="user">
             <template slot="title">个人中心</template>
             <el-menu-item index="userinfo">我的信息</el-menu-item>
             <el-menu-item index="history">历史对局</el-menu-item>
-            <!--            <el-menu-item index="message">消息中心</el-menu-item>-->
-          </el-submenu>
+            &lt;!&ndash;            <el-menu-item index="message">消息中心</el-menu-item>&ndash;&gt;
+          </el-submenu>-->
           <!--好友功能 待定-->
           <!--<el-submenu index="friman">
             <template slot="title">好友管理</template>

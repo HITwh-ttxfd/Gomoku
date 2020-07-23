@@ -89,12 +89,12 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="5">
+<!--            <el-col :span="5">
               <h3>我获得的荣誉</h3>
-            </el-col>
+            </el-col>-->
           </el-row>
         </el-collapse-item>
-        <el-collapse-item name="游戏设置">
+        <!--<el-collapse-item name="游戏设置">
           <template slot="title">
             <p style="font-size: 15px">游戏设置</p>
           </template>
@@ -105,7 +105,7 @@
             <p style="font-size: 15px">....</p>
           </template>
           <div>更多功能亟待开发...</div>
-        </el-collapse-item>
+        </el-collapse-item>-->
       </el-collapse>
     </el-card>
     <el-drawer
